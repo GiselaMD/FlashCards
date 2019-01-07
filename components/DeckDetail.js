@@ -15,10 +15,22 @@ class DeckDetail extends Component {
           <Text style={{fontSize: 22, marginTop: 12}}>{questions && questions.length} cards</Text>
         </View>
         
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            this.props.navigation.navigate('Quiz', {
+                title,
+                questions,
+            });
+          }}>
             <Text style={[styles.startQuiz_btn, styles.text_btn]}>Start Quiz</Text>
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            this.props.navigation.navigate('AddCard', {
+                title,
+                questions,
+            });
+        }}>
             <Text style={[styles.addCard_btn, styles.text_btn]}>Add Card</Text>
         </TouchableOpacity>
       </View>
@@ -34,10 +46,6 @@ function mapStateToProps(state) {
 }
 
 const styles = StyleSheet.create({
-  // container: {
-  //   flex: 1,
-  //   paddingTop: 20,
-  // },  
   addCard_btn: {
     margin: 5,
     backgroundColor: orange,
