@@ -12,4 +12,6 @@ Will install all dependecies.
 
 Runs the application.
 
+Tested on Android.
+
 Developed by: Gisela Miranda Difini
