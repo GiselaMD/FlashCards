@@ -23,7 +23,11 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "org.flashcards.exp"
+    },
+    "android": {
+      "package": "org.flashcards.exp"
     }
   }
 }
