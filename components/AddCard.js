@@ -12,7 +12,6 @@ class AddCard extends React.Component {
     };
 
     submitQuestion = () => {
-        let alert = {};
         const {question, answer} = this.state;
         const {title, questions} = this.props.navigation.state.params;
 

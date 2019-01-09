@@ -10,11 +10,6 @@ export default class Quiz extends Component {
         shouldShowAnswer: false,
     };
 
-    onCorrect = () => {
-        const {index, correctAnswers} = this.state;
-        this.setState({index: index + 1, correctAnswers: correctAnswers + 1, shouldShowAnswer: false});
-    };
-
     startQuiz = () => {
         this.setState({index: 0, correctAnswers: 0, shouldShowAnswer: false});
     };
@@ -23,7 +18,12 @@ export default class Quiz extends Component {
         this.props.navigation.goBack();
     }
 
-    onIncorrect = () => {
+    correctAnswer = () => {
+        const {index, correctAnswers} = this.state;
+        this.setState({index: index + 1, correctAnswers: correctAnswers + 1, shouldShowAnswer: false});
+    };
+
+    incorrectAnswer = () => {
         this.setState({index: this.state.index + 1});
     };
 
@@ -34,21 +34,21 @@ export default class Quiz extends Component {
     render() {
         const {index, correctAnswers, shouldShowAnswer} = this.state;
         const {questions} = this.props.navigation.state.params;
-        const isQuestionAvailable = index < questions.length;
+        const haveQuestions = index < questions.length;
         const questionLeft = questions.length - index;
 
         return (
             <View style={{flex: 1}}>
-                {isQuestionAvailable ? (
+                {haveQuestions ? (
                     <View style={styles.container}>
 
-                        <View style={[styles.group, {justifyContent: 'flex-start', flex: 1}]}>
+                        <View style={{justifyContent: 'flex-start', flex: 1}}>
                             <View>
                                 <Text>Restam {questionLeft} questões</Text>
                             </View>
                         </View>
 
-                        <View style={[styles.group, {flex: 4}]}>
+                        <View style={{flex: 4}}>
                             <View>
                                 {shouldShowAnswer ? (
                                     <View style={{alignItems: 'center'}}>
@@ -74,10 +74,10 @@ export default class Quiz extends Component {
                         <View style={{alignItems: 'center', justifyContent: 'space-around', flex: 2}}>
                             <View style={styles.container}>
 
-                                <TouchableOpacity onPress={this.onCorrect}>
+                                <TouchableOpacity onPress={this.correctAnswer}>
                                     <Text style={[styles.correct_btn, styles.text_btn]}>Correct</Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={this.onIncorrect}>
+                                <TouchableOpacity onPress={this.incorrectAnswer}>
                                     <Text style={[styles.incorrect_btn, styles.text_btn]}>Incorrect</Text>
                                 </TouchableOpacity>
 
