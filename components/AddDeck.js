@@ -1,14 +1,16 @@
 import React from 'react';
 import {Alert, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
-import {createDeck} from '../utils/api';
+import {addNewDeck} from '../utils/api';
 import {connect} from 'react-redux';
 import {addDeck} from '../actions/index';
 import {purple, white} from '../utils/colors'
+import { FormLabel, FormInput, FormValidationMessage } from 'react-native-elements'
 
 class AddDeck extends React.Component {
     componentWillMount() {
         this.setState({
-            text: ''
+            text: '',
+            errorMessage: false,
         })
     }
 
@@ -16,12 +18,8 @@ class AddDeck extends React.Component {
         const entry = this.state;
         const {decks} = this.props;
 
-        if (!entry.text) {
-            Alert.alert(
-                'Campo obrigatório',
-                'O título não pode ser vazio'
-            );
-        } else {
+        if (!entry.text){this.setState({errorMessage: true})}
+        else{
             if (decks[entry.text]) {
                 Alert.alert(
                     'Error!',
@@ -31,7 +29,7 @@ class AddDeck extends React.Component {
                 const newDeck = {[entry.text]: {title: entry.text, questions: []}};
 
                 this.props.dispatch(addDeck(newDeck));
-                createDeck(newDeck);
+                addNewDeck(newDeck);
 
                 Alert.alert(
                     'Sucesso!', 'Deck adicionado',
@@ -51,19 +49,18 @@ class AddDeck extends React.Component {
     render() {
         return (
             <View style={style.container}>
-                <Text style={style.title}>Title: </Text>
+                <FormLabel style={style.title}>Title</FormLabel>
 
-                <TextInput
+                <FormInput
                     value={this.state.text}
                     placeholder='My Deck'
                     style={style.input}
                     onChangeText={text => this.setState({text})}/>
-
+                <FormValidationMessage>{this.state.errorMessage ? 'This field is required': ''}</FormValidationMessage>
                 <TouchableOpacity
                     onPress={this.addCurrentDeck}
                     style={style.addDeck_btn}>
                     <Text style={style.text_btn}>Create Deck</Text>
-
                 </TouchableOpacity>
 
             </View>

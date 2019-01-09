@@ -2,44 +2,45 @@ import React from 'react';
 import {Alert, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
 import {addQuestion} from '../actions';
 import {connect} from 'react-redux';
-import {addQuestionForDeck} from '../utils/api';
+import {addCard} from '../utils/api';
 import {purple, white} from '../utils/colors'
+import { FormLabel, FormInput, FormValidationMessage } from 'react-native-elements'
 
 class AddCard extends React.Component {
 
     state = {
-        question: '', answer: ''
+        question: '', answer: '',
+        errorMessage: false
     };
 
     submitQuestion = () => {
         const {question, answer} = this.state;
         const {title, questions} = this.props.navigation.state.params;
-
-        if (question === '') {
-            Alert.alert('Campo obrigatório', 'A pergunta deve ter um título');
-            return;
-        }
-        if (answer === '') {
-            Alert.alert('Campo obrigatório', 'A resposta não pode estar vazia');
-            return;
-        }
-
         const params = {title, questions, question, answer};
+
+        if(question && answer){
+            this.setState({
+                errorMessage: false,
+                question: ''
+              });
+              Alert.alert('Sucesso!', 'Seu novo Card foi adicionado',
+              [
+                  {
+                      text: 'OK', onPress: () =>
+                      this.props.navigation.goBack()
+                  }
+              ],)
+        }
+        else{
+            this.setState({ errorMessage: true })
+        }
 
         this.props.dispatch(addQuestion(params));
 
-        addQuestionForDeck({
+        addCard({
             card: {question, answer},
             deckName: title
         });
-
-        Alert.alert('Sucesso!', 'Seu novo Card foi adicionado',
-            [
-                {
-                    text: 'OK', onPress: () =>
-                    this.props.navigation.goBack()
-                }
-            ],);
     };
 
     render() {
@@ -47,19 +48,20 @@ class AddCard extends React.Component {
 
         return (
             <View style={style.container}>
-                <Text>Pergunta:</Text>
-                <TextInput
+                <FormLabel>Pergunta</FormLabel>
+                <FormInput 
                     placeholder="Você gosta de React?"
                     value={question}
                     style={style.input}
                     onChangeText={question => this.setState({question})}/>
-                <Text>Resposta:</Text>
-                <TextInput
+                <FormValidationMessage>{this.state.errorMessage ? 'This field is required': ''}</FormValidationMessage>
+                <FormLabel>Resposta</FormLabel>
+                <FormInput
                     placeholder="Amo <3"
                     value={answer}
                     style={style.input}
                     onChangeText={answer => this.setState({answer})}/>
-
+                <FormValidationMessage>{this.state.errorMessage ? 'This field is required': ''}</FormValidationMessage>
                 <TouchableOpacity
                     onPress={this.submitQuestion}
                     style={style.addCard_btn}>

@@ -10,7 +10,11 @@ class DeckList extends  Component {
     componentDidMount() {
         const {dispatch} = this.props;
         fetchDecks().then(decks => dispatch(getDecks(decks)))
-            .then(() => this.setState(() => ({ready: true})));
+            .then(() => 
+                this.setState(
+                    () => ({ready: true})
+                )
+            );
     }
 
     renderItem = ({item}) => (
@@ -27,8 +31,9 @@ class DeckList extends  Component {
     render() {
         return (
             <View style={styles.container}>
-                <Text style={[{fontSize: 36}, {textAlign: 'center'}]}>Decks</Text>
+                <Text style={styles.title}>Decks</Text>
                 <FlatList
+                    style={styles.deck_list}
                     data={Object.values(this.props.decks).sort((a, b) => a.title > b.title)}
                     renderItem={this.renderItem}
                     keyExtractor={(item, index) => index}/>
@@ -59,6 +64,13 @@ const styles = StyleSheet.create({
     paddingRight: 15,
     paddingBottom: 15,
     paddingLeft: 15,
+  },
+  title: {
+    fontSize: 36,
+    textAlign: 'center',
+  },
+  deck_list: {
+      marginTop: 20
   }
 });
 

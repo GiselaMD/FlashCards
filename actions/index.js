@@ -1,9 +1,9 @@
-export const FETCH_DECKS = 'FETCH_DECKS';
+export const GET_DECKS = 'GET_DECKS';
 export const ADD_DECK = 'ADD_DECK';
 export const ADD_QUESTION = 'ADD_QUESTION';
 
 export const getDecks = decks => ({
-    type: FETCH_DECKS,
+    type: GET_DECKS,
     decks,
 });
 
@@ -12,7 +12,7 @@ export const addDeck = deck => ({
     deck,
 });
 
-export const addQuestion = params => ({
+export const addQuestion = card => ({
     type: ADD_QUESTION,
-    params,
+    card,
 });

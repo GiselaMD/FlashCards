@@ -34,11 +34,11 @@ export function fetchDecks() {
     });
 }
 
-export function createDeck(deck) {
+export function addNewDeck(deck) {
     return AsyncStorage.mergeItem(DECKS_STORAGE_KEY, JSON.stringify(deck));
 }
 
-export function addQuestionForDeck({card, deckName}) {
+export function addCard({card, deckName}) {
     return AsyncStorage.getItem(DECKS_STORAGE_KEY, (err, result) => {
         let decks = JSON.parse(result);
 
